@@ -1,58 +1,60 @@
-let bienvenida = alert("Bienvenido a Sanguchito Vegano")
+let nombre = prompt("Hola, ¿Cuál es tu nombre?");
+alert("Bienvenido" + " " + nombre + " " + "a Sanguchito Vegano.");
 
-let nombre = prompt("¿Cual es tu nombre?")
-alert("Bienvenido" + " " + nombre)
-
-let docenaDeSanguchitos = 2
-
-let compra; 
-
-let producto = 1200
-
-stock ();
+let docenaDeSanguchitos = 2;
 
 
+let producto = 1200;
 
-let opcionesDePago = parseInt(prompt("Seleccione la forma de pago: \ 1. Pago efectivo, 10% OFF \ 2. Pago con tarjeta 1 pago, sin recargo \ 3. Pago con tarjeta en 3 cuota, 10% de recargo"))
+stock();
 
-switch(opcionesDePago){
-    
+function stock() {
+  const docenas = parseInt(prompt("¿Cuantás docenas desea?"));
+  const resultado = docenas * producto;
+
+  if (docenas === 1) {
+    alert("El monto a abonar es" + " " + producto);
+  }
+
+  if (docenas === 2) {
+    alert("El monto a abonar es" + " " + resultado);
+  }
+  if (docenas > 2) {
+    alert(
+      "Lo sentimos solo tenemos" +
+      " " +
+      docenaDeSanguchitos +
+      " " +
+      "docenas en stock"
+    );
+  }
+
+  let opcionesDePago = parseInt(
+    prompt(
+      "Seleccione la forma de pago: \n 1. Pago efectivo, 10% OFF \n  2. Pago con tarjeta 1 pago, sin recargo \n 3. Pago con tarjeta en 3 cuota, 10% de recargo"
+    )
+  );
+
+  switch (opcionesDePago) {
     case 1:
-        let descuento = producto * 10 / 100 
-        console.log (descuento)
-        let valorEfectivo = producto - descuento 
-        alert ("El monto es:" + " " + valorEfectivo)
-        break;
-    
+      const descuento = resultado * 10 / 100;
+      console.log(descuento);
+      const valorEfectivo = resultado - descuento;
+      alert("El monto es:" + " " + valorEfectivo);
+      break;
 
-    case 2: 
-        let valorUnPago = compra
-        alert ("El monto es:" + " " + valorUnPago)
-        break;
-    
-    
-    case 3: 
-        let valorTresCuotas = compra + 10%
-        alert ("El monto es:" + " " + valorTresCuotas)
-        break;
-    
+    case 2:
+      const valorUnPago = resultado;
+      alert("El monto es:" + " " + valorUnPago);
+      break;
+
+    case 3:
+      const recargo = resultado * 10 /100;
+      const valorTresCuotas = resultado + recargo;
+      const valorPorCuota = valorTresCuotas /3;
+      alert("El monto a abonar es:" + " " + valorTresCuotas + " " + ",en 3 cuotas de:" + " " + valorPorCuota);
+      break;
+  }
 }
 
-
-function stock (){
-    
-    let compra = parseInt (prompt("¿Cuantás docenas desea?"));
-    
-    if (compra = 1){
-        alert("El monto a abonar es" + " " + producto)
-    }
-
-    if (compra = 2){
-       let resultado = producto * compra
-        alert("El monto a abonar es" + " " + resultado) 
-    } 
-    if (compra > 2){
-        alert ("Lo sentimos solo tenemos" + " " + docenaDeSanguchitos + " " + "docenas en stock")
-    }
-    
-}
+alert("¡Muchas gracias por tu compra!");
