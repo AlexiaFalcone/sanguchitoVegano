@@ -8,6 +8,8 @@ let producto = 1200;
 
 stock();
 
+
+
 function stock() {
   const docenas = parseInt(prompt("¿Cuantás docenas desea?"));
   const resultado = docenas * producto;
@@ -49,12 +51,21 @@ function stock() {
       break;
 
     case 3:
-      const recargo = resultado * 10 /100;
+      const recargo = resultado * 10 / 100;
       const valorTresCuotas = resultado + recargo;
-      const valorPorCuota = valorTresCuotas /3;
+      const valorPorCuota = valorTresCuotas / 3;
       alert("El monto a abonar es:" + " " + valorTresCuotas + " " + ",en 3 cuotas de:" + " " + valorPorCuota);
       break;
   }
+
+  const seguirComprando = parseInt(prompt("¿Te gustaría realizar otra compra? \n 1. Si \n 2. No"));
+
+  while (seguirComprando === 1) {
+    stock();
+    return;
+  }
+
+
 }
 
 alert("¡Muchas gracias por tu compra!");
