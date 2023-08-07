@@ -1,22 +1,21 @@
 // PRODUCTOS DISPONIBLES //
 
 class productosDisponibles {
-  constructor(nombre, precio, descripcion){
-  this.nombre = nombre;
-  this.precio = precio;
-  this.descripcion = descripcion;
+  constructor(nombre, precio, descripcion) {
+    this.nombre = nombre;
+    this.precio = precio;
+    this.descripcion = descripcion;
   }
 };
 
 const productos = [
-  new productosDisponibles ("Pan Integral", 850, "Pan integral grande"),
-  new productosDisponibles ("Chipa Vegano", 1000, "Valor por un 250 gr"),
-  new productosDisponibles ("Sanguchitos Caprese", 1600, "Valor por 1/2 docena"),
+  new productosDisponibles("Pan Integral", 850, "Pan integral grande"),
+  new productosDisponibles("Chipa Vegano", 1000, "Valor por un 250 gr"),
+  new productosDisponibles("Sanguchitos Caprese", 1600, "Valor por 1/2 docena"),
 ];
 
-console.log (productos);
+console.log(productos);
 
-// CARRITO //
 
 let carrito = [];
 
@@ -27,30 +26,30 @@ let carrito = [];
 let nombre = prompt("Hola, ¿Cuál es tu nombre?");
 alert("Bienvenido " + nombre + " a Sanguchito Vegano.");
 
-function mostrarProductos (){
+function mostrarProductos() {
 
-const elegirProducto = prompt ("¿Qué desea comprar? \nPan Integral \nChipa Vegano  \nSanguchitos Caprese");
+  const elegirProducto = prompt("¿Qué desea comprar? \nPan Integral \nChipa Vegano  \nSanguchitos Caprese");
 
-const productoSeleccionado = productos.find (producto => producto.nombre.toLowerCase() === elegirProducto.toLowerCase());
+  const productoSeleccionado = productos.find(producto => producto.nombre.toLowerCase() === elegirProducto.toLowerCase());
 
-carrito.push(productoSeleccionado);
+  carrito.push(productoSeleccionado);
 
-console.log (carrito);
+  console.log(carrito);
 
-const seguirComprando = parseInt(prompt("¿Te gustaría seguir comprando? \n 1 Si \n2 No"));
+  const seguirComprando = parseInt(prompt("¿Te gustaría seguir comprando? \n 1 Si \n2 No"));
 
-while (seguirComprando === 1 ){
-  mostrarProductos();
-  return;
-}
+  while (seguirComprando === 1) {
+    mostrarProductos();
+    return;
+  }
 }
 mostrarProductos();
 
 const mostrarCarrito = carrito.map((prod) => prod.nombre);
 
-console.log (mostrarCarrito);
+console.log(mostrarCarrito);
 
-const valorCompra = carrito.reduce ((acumulador, producto) => acumulador + producto.precio, 0);
+const valorCompra = carrito.reduce((acumulador, producto) => acumulador + producto.precio, 0);
 
 const itemsCompra = alert("Los Items seleccionados son: \n" + mostrarCarrito + "\n El valor total es:" + valorCompra);
 
@@ -78,11 +77,11 @@ switch (opcionesDePago) {
     alert("El monto es:" + " " + valorUnPago);
     break;
 
-case 3:
-     const recargo = valorCompra * 10 / 100;
+  case 3:
+    const recargo = valorCompra * 10 / 100;
     const valorTresCuotas = valorCompra + recargo;
     const valorPorCuota = valorTresCuotas / 3;
-  alert("El monto a abonar es:" + " " + valorTresCuotas + " " + ",en 3 cuotas de:" + " " + parseInt(valorPorCuota));
+    alert("El monto a abonar es:" + " " + valorTresCuotas + " " + ",en 3 cuotas de:" + " " + parseInt(valorPorCuota));
     break;
 }
 
