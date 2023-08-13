@@ -1,17 +1,25 @@
+// DOM //
+const productosItem = document.querySelector("#productos");
+const carritoItem = document.querySelector("#carrito");
+const contadorCard = document.querySelector("#contador");
+const sumarProd = document.querySelector("#sumar");
+const restarProd = document.querySelector("#restar");
+
+
 // PRODUCTOS DISPONIBLES //
 
 class productosDisponibles {
-  constructor(nombre, precio, descripcion) {
+  constructor(nombre, precio, stock) {
     this.nombre = nombre;
     this.precio = precio;
-    this.descripcion = descripcion;
+    this.stock = stock;
   }
 };
 
-const productos = [
-  new productosDisponibles("Pan Integral", 850, "Pan integral grande"),
-  new productosDisponibles("Chipa Vegano", 1000, "Valor por un 250 gr"),
-  new productosDisponibles("Sanguchitos Caprese", 1600, "Valor por 1/2 docena"),
+let productos = [
+  new productosDisponibles("Pan Integral", 850, 10),
+  new productosDisponibles("Chipa Vegano", 1000, 15),
+  new productosDisponibles("Sanguchitos Caprese", 1600, 10),
 ];
 
 console.log(productos);
@@ -19,70 +27,54 @@ console.log(productos);
 
 let carrito = [];
 
+/* CARD DEL HTML */
 
+const mostrarCardHtml = () => {
+  productosItem.innerHTML = " ";
+  productos.forEach((producto, index) => {
+    let cardDelProducto = document.createElement("div");
+    cardDelProducto.innerHTML = `
+    <p>Nombre:${producto.nombre}</p>
+    <p>Precio:${producto.precio}</p>`;
+    productosItem.appendChild(cardDelProducto);
+    
+    let btnAgregarProducto = document.createElement("button");
+    btnAgregarProducto.innerHTML = "Agregar Producto";
+    cardDelProducto.appendChild(btnAgregarProducto);
 
-// INTERACCION CON EL USUARIO//
+    btnAgregarProducto.onclick = () => agregarProducto(index);
 
-let nombre = prompt("Hola, ¿Cuál es tu nombre?");
-alert("Bienvenido " + nombre + " a Sanguchito Vegano.");
+    let btnEliminarProducto = document.createElement("button");
+    btnEliminarProducto.innerHTML = "Eliminar Producto";
+    cardDelProducto.appendChild(btnEliminarProducto);
 
-function mostrarProductos() {
+    btnEliminarProducto.onclick = () => btnEliminarProducto (index);
 
-  const elegirProducto = prompt("¿Qué desea comprar? \nPan Integral \nChipa Vegano  \nSanguchitos Caprese");
+  })
+};
 
-  const productoSeleccionado = productos.find(producto => producto.nombre.toLowerCase() === elegirProducto.toLowerCase());
+/* CONTADOR */
 
-  carrito.push(productoSeleccionado);
+let contador = 0
 
-  console.log(carrito);
+const valorDelContador = () => {
+  contadorCard.innerHTML = contador;
 
-  const seguirComprando = parseInt(prompt("¿Te gustaría seguir comprando? \n 1 Si \n2 No"));
-
-  while (seguirComprando === 1) {
-    mostrarProductos();
-    return;
+  if (contador === 0){
+    restarProd.disabled = true;
+  } else {
+    restarProd.disabled = false;
   }
-}
-mostrarProductos();
+};
 
-const mostrarCarrito = carrito.map((prod) => prod.nombre);
+sumarProd.onclick = () => {
+  contador++;
+  valorDelContador();
+};
 
-console.log(mostrarCarrito);
-
-const valorCompra = carrito.reduce((acumulador, producto) => acumulador + producto.precio, 0);
-
-const itemsCompra = alert("Los Items seleccionados son: \n" + mostrarCarrito + "\n El valor total es:" + valorCompra);
-
-
-
-// OPCIONES DE PAGO//
-
-
-let opcionesDePago = parseInt(
-  prompt(
-    "Seleccione la forma de pago: \n 1. Pago efectivo, 10% OFF \n  2. Pago con tarjeta 1 pago, sin recargo \n 3. Pago con tarjeta en 3 cuota, 10% de recargo"
-  )
-);
-
-switch (opcionesDePago) {
-  case 1:
-    const descuento = valorCompra * 10 / 100;
-    console.log(descuento);
-    const valorEfectivo = valorCompra - descuento;
-    alert("El monto es:" + " " + valorEfectivo);
-    break;
-
-  case 2:
-    const valorUnPago = valorCompra;
-    alert("El monto es:" + " " + valorUnPago);
-    break;
-
-  case 3:
-    const recargo = valorCompra * 10 / 100;
-    const valorTresCuotas = valorCompra + recargo;
-    const valorPorCuota = valorTresCuotas / 3;
-    alert("El monto a abonar es:" + " " + valorTresCuotas + " " + ",en 3 cuotas de:" + " " + parseInt(valorPorCuota));
-    break;
+restarProd.onclick = () => {
+  contador--;
+  valorDelContador();
 }
 
-alert("¡Muchas gracias por tu compra!");
+mostrarCardHtml();
