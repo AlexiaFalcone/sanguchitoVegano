@@ -57,6 +57,8 @@ const mostrarCardHtml = () => {
 
 let contador = 0
 
+restarProd.disabled = true;
+
 const valorDelContador = () => {
   contadorCard.innerHTML = contador;
 
@@ -68,6 +70,7 @@ const valorDelContador = () => {
 };
 
 sumarProd.onclick = () => {
+  
   contador++;
   valorDelContador();
 };
@@ -75,6 +78,25 @@ sumarProd.onclick = () => {
 restarProd.onclick = () => {
   contador--;
   valorDelContador();
+}
+
+/*AGREGAR PRODUCTOS AL CARRITO */
+
+const agregarProducto = (index) =>{
+  productos[index].cantidad = contador;
+
+  if (contador > productos[index].stock){
+    return Swal.fire({
+      text: `No hay suficiente stock la cantidad de máxima de productos es ${productos[index].stock}`,
+      icon: "error",
+    });
+  }
+  if (contador === 0){
+    return Swal.fire({
+      text: "Debe seleccionar 1 producto",
+      icon: "error",
+    });
+  }
 }
 
 mostrarCardHtml();
