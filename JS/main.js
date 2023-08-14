@@ -25,7 +25,16 @@ let productos = [
 console.log(productos);
 
 
-let carrito = [];
+/* ARRAY DEL CARRITO EN LOCALSTORAGE */
+
+let carrito;
+
+if (localStorage.getItem("carrito") === null){
+ carrito = [];
+} else{
+  localStorage.getItem("carrito");
+}
+
 
 /* CARD DEL HTML */
 
@@ -98,5 +107,12 @@ const agregarProducto = (index) =>{
     });
   }
 }
+
+/* CARRITO */
+
+carrito.push(productos[index]);
+
+localStorage.getItem(carrito, JSON.stringify(carrito));
+
 
 mostrarCardHtml();
