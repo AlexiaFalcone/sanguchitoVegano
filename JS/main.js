@@ -1,15 +1,13 @@
 // DOM //
 const productosItem = document.querySelector("#productos");
 const carritoItem = document.querySelector("#carrito");
-const contadorCard = document.querySelector("#contador");
-const sumarProd = document.querySelector("#sumar");
-const restarProd = document.querySelector("#restar");
 
 
 // PRODUCTOS DISPONIBLES //
 
 class productosDisponibles {
-  constructor(nombre, precio, stock) {
+  constructor(id, nombre, precio, stock) {
+    this.id = id;
     this.nombre = nombre;
     this.precio = precio;
     this.stock = stock;
@@ -17,9 +15,9 @@ class productosDisponibles {
 };
 
 let productos = [
-  new productosDisponibles("Pan Integral", 850, 10),
-  new productosDisponibles("Chipa Vegano", 1000, 15),
-  new productosDisponibles("Sanguchitos Caprese", 1600, 10),
+  new productosDisponibles(1, "Pan Integral", 850, 10),
+  new productosDisponibles(2, "Chipa Vegano", 1000, 15),
+  new productosDisponibles(3, "Sanguchitos Caprese", 1600, 10),
 ];
 
 console.log(productos);
@@ -29,24 +27,28 @@ console.log(productos);
 
 let carrito;
 
-if (localStorage.getItem("carrito") === null){
- carrito = [];
-} else{
-  localStorage.getItem("carrito");
-}
+//if (localStorage.getItem("carrito") === null) {
+  //carrito = [];
+//} else {
+//  localStorage.getItem("carrito");
+//}
 
 
 /* CARD DEL HTML */
 
 const mostrarCardHtml = () => {
   productosItem.innerHTML = " ";
+
   productos.forEach((producto, index) => {
     let cardDelProducto = document.createElement("div");
     cardDelProducto.innerHTML = `
     <p>Nombre:${producto.nombre}</p>
-    <p>Precio:${producto.precio}</p>`;
+    <p>Precio:${producto.precio}</p>
+    <p>Agregar producto: <span id="contador-${producto.id}" >0</span></p>
+    <button id="sumar-${producto.id}">+</button>
+    <button id="resta-${producto.id}>-</button>`;
     productosItem.appendChild(cardDelProducto);
-    
+
     let btnAgregarProducto = document.createElement("button");
     btnAgregarProducto.innerHTML = "Agregar Producto";
     cardDelProducto.appendChild(btnAgregarProducto);
@@ -57,62 +59,61 @@ const mostrarCardHtml = () => {
     btnEliminarProducto.innerHTML = "Eliminar Producto";
     cardDelProducto.appendChild(btnEliminarProducto);
 
-    btnEliminarProducto.onclick = () => btnEliminarProducto (index);
+    btnEliminarProducto.onclick = () => btnEliminarProducto(index);
+    const contadorCard = document.querySelector(`#contador-${productos.id}`);
+    
+    const sumarProd = document.querySelector(`#sumar-${productos.id}`);
+    const restarProd = document.querySelector(`#restar-${productos.id}`);
 
+
+    sumarProd.addEventListener("click", sumar(contadorCard));
+    restarProd.addEventListener("click", restar(contadorCard));
   })
 };
 
-/* CONTADOR */
-
-let contador = 0
-
-restarProd.disabled = true;
-
-const valorDelContador = () => {
-  contadorCard.innerHTML = contador;
-
-  if (contador === 0){
-    restarProd.disabled = true;
-  } else {
-    restarProd.disabled = false;
-  }
-};
-
-sumarProd.onclick = () => {
-  
-  contador++;
-  valorDelContador();
-};
-
-restarProd.onclick = () => {
-  contador--;
-  valorDelContador();
+function sumar(contadorCard){
+  let valorActual = parseInt(contadorCard.textContent);
+  valorActual++;
+  contadorCard.textContent = valorActual;
 }
+
+function restar(contadorCard){
+  let valorActual = parseInt(contadorCard.textContent);
+  valorActual--;
+  contadorCard.textContent = valorActual;
+}
+
+
 
 /*AGREGAR PRODUCTOS AL CARRITO */
 
-const agregarProducto = (index) =>{
-  productos[index].cantidad = contador;
+function agregarProducto(index) {
+  const contadorCard = document.querySelector(`#contador-${productos.id}`);
+  const cantidad = parseInt(contadorCard.textContent)
 
-  if (contador > productos[index].stock){
+  if (cantidad > productos[index].stock) {
     return Swal.fire({
       text: `No hay suficiente stock la cantidad de máxima de productos es ${productos[index].stock}`,
       icon: "error",
     });
-  }
-  if (contador === 0){
+  }if (cantidad === 0) {
     return Swal.fire({
       text: "Debe seleccionar 1 producto",
       icon: "error",
     });
+  }else{
+    const productoSeleccionado= {
+      id: productos[index].id,
+      producto: productos[index].nombre,
+      precio: productos[index].precio,
+      cantidad: cantidad
+    }
+
+    carrito.push(productoSeleccionado);
+    localStorage.getItem("carrito", JSON.stringify(carrito));
   }
-}
-
-/* CARRITO */
-
-carrito.push(productos[index]);
-
-localStorage.getItem(carrito, JSON.stringify(carrito));
-
+  
+};
 
 mostrarCardHtml();
+agregarProducto();
