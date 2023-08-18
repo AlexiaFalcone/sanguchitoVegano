@@ -46,7 +46,7 @@ const mostrarCardHtml = () => {
     <p>Precio:${producto.precio}</p>
     <p>Agregar producto: <span id="contador-${producto.id}" >0</span></p>
     <button id="sumar-${producto.id}">+</button>
-    <button id="resta-${producto.id}>-</button>`;
+    <button id="resta-${producto.id}">-</button>`;
     productosItem.appendChild(cardDelProducto);
 
     let btnAgregarProducto = document.createElement("button");
@@ -60,14 +60,13 @@ const mostrarCardHtml = () => {
     cardDelProducto.appendChild(btnEliminarProducto);
 
     btnEliminarProducto.onclick = () => btnEliminarProducto(index);
-    const contadorCard = document.querySelector(`#contador-${productos.id}`);
+    const contadorCard = document.querySelector(`#contador-${producto.id}`);
     
-    const sumarProd = document.querySelector(`#sumar-${productos.id}`);
-    const restarProd = document.querySelector(`#restar-${productos.id}`);
+    const sumarProd = document.querySelector(`#sumar-${producto.id}`);
+    const restarProd = document.querySelector(`#resta-${producto.id}`);
 
 
-    sumarProd.addEventListener("click", sumar(contadorCard));
-    restarProd.addEventListener("click", restar(contadorCard));
+    
   })
 };
 
@@ -75,12 +74,15 @@ function sumar(contadorCard){
   let valorActual = parseInt(contadorCard.textContent);
   valorActual++;
   contadorCard.textContent = valorActual;
+
+  sumarProd.addEventListener("click", sumar(contadorCard));
 }
 
-function restar(contadorCard){
+function resta(contadorCard){
   let valorActual = parseInt(contadorCard.textContent);
   valorActual--;
   contadorCard.textContent = valorActual;
+  restarProd.addEventListener("click", resta(contadorCard));
 }
 
 
@@ -88,7 +90,7 @@ function restar(contadorCard){
 /*AGREGAR PRODUCTOS AL CARRITO */
 
 function agregarProducto(index) {
-  const contadorCard = document.querySelector(`#contador-${productos.id}`);
+  const contadorCard = document.querySelector(`#contador-${productos[index].id}`);
   const cantidad = parseInt(contadorCard.textContent)
 
   if (cantidad > productos[index].stock) {
