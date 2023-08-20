@@ -2,6 +2,9 @@
 const productosItem = document.querySelector("#productos");
 const carritoItem = document.querySelector("#carrito");
 
+const sumarProd = document.querySelector(`btnSuma`);
+const restarProd = document.querySelector(`btnResta`);
+
 
 // PRODUCTOS DISPONIBLES //
 
@@ -11,6 +14,7 @@ class productosDisponibles {
     this.nombre = nombre;
     this.precio = precio;
     this.stock = stock;
+    this.contador = 0;
   }
 };
 
@@ -25,14 +29,7 @@ console.log(productos);
 
 /* ARRAY DEL CARRITO EN LOCALSTORAGE */
 
-let carrito;
-
-//if (localStorage.getItem("carrito") === null) {
-  //carrito = [];
-//} else {
-//  localStorage.getItem("carrito");
-//}
-
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
 /* CARD DEL HTML */
 
@@ -44,10 +41,49 @@ const mostrarCardHtml = () => {
     cardDelProducto.innerHTML = `
     <p>Nombre:${producto.nombre}</p>
     <p>Precio:${producto.precio}</p>
-    <p>Agregar producto: <span id="contador-${producto.id}" >0</span></p>
-    <button id="sumar-${producto.id}">+</button>
-    <button id="resta-${producto.id}">-</button>`;
+    <p>Agregar producto: <span>${producto.contador}</span></p>`;
     productosItem.appendChild(cardDelProducto);
+
+    let btnSuma = document.createElement("button");
+    btnSuma.innerHTML = "+";
+    cardDelProducto.appendChild(btnSuma);
+
+    let btnResta = document.createElement("button");
+    btnResta.innerHTML = "-";
+    cardDelProducto.appendChild(btnResta);
+
+    btnSuma.onclick = () => {
+      const prodSumados = () =>{
+        producto.contador += 1;
+      };
+      const cantidad = parseInt(prodSumados.textContent);
+
+      if (cantidad > productos[index].stock) {
+        return Swal.fire({
+          text: `No hay suficiente stock la cantidad de máxima de productos es ${productos[index].stock}`,
+          icon: "error",
+        });
+      } if (cantidad === 0) {
+        return Swal.fire({
+          text: "Debe seleccionar 1 producto",
+          icon: "error",
+        });
+      } else {
+        const productoSeleccionado = {
+          id: productos[index].id,
+          producto: productos[index].nombre,
+         precio: productos[index].precio,
+          cantidad: cantidad
+        }
+      };
+
+
+    };
+    btnResta.onclick = () => {
+      btnResta.disabled = true;
+      producto.contador -= 1
+
+    }
 
     let btnAgregarProducto = document.createElement("button");
     btnAgregarProducto.innerHTML = "Agregar Producto";
@@ -60,62 +96,19 @@ const mostrarCardHtml = () => {
     cardDelProducto.appendChild(btnEliminarProducto);
 
     btnEliminarProducto.onclick = () => btnEliminarProducto(index);
-    const contadorCard = document.querySelector(`#contador-${producto.id}`);
-    
-    const sumarProd = document.querySelector(`#sumar-${producto.id}`);
-    const restarProd = document.querySelector(`#resta-${producto.id}`);
 
-
-    
   })
 };
-
-function sumar(contadorCard){
-  let valorActual = parseInt(contadorCard.textContent);
-  valorActual++;
-  contadorCard.textContent = valorActual;
-
-  sumarProd.addEventListener("click", sumar(contadorCard));
-}
-
-function resta(contadorCard){
-  let valorActual = parseInt(contadorCard.textContent);
-  valorActual--;
-  contadorCard.textContent = valorActual;
-  restarProd.addEventListener("click", resta(contadorCard));
-}
-
 
 
 /*AGREGAR PRODUCTOS AL CARRITO */
 
-function agregarProducto(index) {
-  const contadorCard = document.querySelector(`#contador-${productos[index].id}`);
-  const cantidad = parseInt(contadorCard.textContent)
+const agregarProducto = (id) => {
+const producto = productos.find( producto => producto.id === id)
 
-  if (cantidad > productos[index].stock) {
-    return Swal.fire({
-      text: `No hay suficiente stock la cantidad de máxima de productos es ${productos[index].stock}`,
-      icon: "error",
-    });
-  }if (cantidad === 0) {
-    return Swal.fire({
-      text: "Debe seleccionar 1 producto",
-      icon: "error",
-    });
-  }else{
-    const productoSeleccionado= {
-      id: productos[index].id,
-      producto: productos[index].nombre,
-      precio: productos[index].precio,
-      cantidad: cantidad
-    }
+carrito.push(producto);
+localStorage.setItem("carrito", JSON.stringify(carrito)); 
 
-    carrito.push(productoSeleccionado);
-    localStorage.getItem("carrito", JSON.stringify(carrito));
-  }
-  
 };
 
 mostrarCardHtml();
-agregarProducto();
