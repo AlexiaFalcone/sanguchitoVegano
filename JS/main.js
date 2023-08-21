@@ -5,11 +5,9 @@ const prodSuma = document.querySelector(".suma");
 const prodResta = document.querySelector(".resta");
 const agregarAlCarrito = document.querySelector(".agragar");
 
-
-
 // PRODUCTOS DISPONIBLES //
 
-class productosDisponibles {
+class ProductosDisponibles {
   constructor(id, nombre, precio, stock) {
     this.id = id;
     this.nombre = nombre;
@@ -20,13 +18,12 @@ class productosDisponibles {
 };
 
 let productos = [
-  new productosDisponibles(1, "Pan Integral", 850, 10),
-  new productosDisponibles(2, "Chipa Vegano", 1000, 15),
-  new productosDisponibles(3, "Sanguchitos Caprese", 1600, 10),
+  new ProductosDisponibles(1, "Pan Integral", 850, 10),
+  new ProductosDisponibles(2, "Chipa Vegano", 1000, 15),
+  new ProductosDisponibles(3, "Sanguchitos Caprese", 1600, 10),
 ];
 
 console.log(productos);
-
 
 /* ARRAY DEL CARRITO EN LOCALSTORAGE */
 
@@ -43,8 +40,8 @@ const mostrarCardHtml = () => {
     <p>Nombre:${producto.nombre}</p>
     <p>Precio:${producto.precio}</p>`;
     productosItem.appendChild(cardDelProducto);
-    
-    let cantidad = document.createElement ("p");
+
+    let cantidad = document.createElement("p");
     cantidad.innerHTML = `Cantidad: ${producto.contador}`;
     cardDelProducto.appendChild(cantidad);
 
@@ -53,8 +50,8 @@ const mostrarCardHtml = () => {
     cardDelProducto.appendChild(btnSuma);
     btnSuma.onclick = () => sumarProducto();
 
-    const sumarProducto = () =>{
-      cantidad.innerHTML = producto.contador +=1;
+    const sumarProducto = () => {
+      cantidad.innerHTML = producto.contador += 1;
     }
 
     let btnResta = document.createElement("button");
@@ -69,8 +66,7 @@ const mostrarCardHtml = () => {
       } else {
         cantidad.innerHTML = producto.contador -= 1
       }
-
-    }
+    };
 
     const btnAgregarProducto = document.createElement("button");
     btnAgregarProducto.innerHTML = "Agregar Producto";
@@ -78,16 +74,9 @@ const mostrarCardHtml = () => {
 
     btnAgregarProducto.onclick = () => agregarProducto(producto.id);
 
-    const btnEliminarProducto = document.createElement("button");
-    btnEliminarProducto.innerHTML = "Eliminar Producto";
-    cardDelProducto.appendChild(btnEliminarProducto);
-
-    btnEliminarProducto.onclick = () => btnEliminarProducto(producto.id);
-
     /*AGREGAR PRODUCTOS AL CARRITO */
 
     const agregarProducto = (id) => {
-
       if (producto.contador > producto.stock) {
         return Swal.fire({
           text: `No hay suficiente stock la cantidad de máxima de productos es ${producto.stock}`,
@@ -103,18 +92,41 @@ const mostrarCardHtml = () => {
         carrito.push(producto);
         localStorage.setItem("carrito", JSON.stringify(carrito));
         console.log(producto);
+
       }
-
-
     };
+
   })
 };
 
+const mostrarCarrito = () => {
+  contenedorProd.innerHTML = " ";
 
+  carrito = JSON.parse(localStorage.getItem("carrito"));
+  carrito.forEach((producto) => {
+    let prodBox = document.createElement("div");
+    prodBox.innerHTML = `
+    <p>Nombre:${producto.nombre}</p>
+    <p>Precio:${producto.precio}</p>
+    <p>Cantidad: ${producto.contador}</p>
+    <p>Valor: ${producto.precio * producto.cantidad}</p>
+    `
+    contenedorProd.appendChild(prodBox);
+  });
 
+  const vaciarCarrito = document.createElement("button");
+  vaciarCarrito.innerHTML = "Vaciar Carrito";
+  contenedorProd.appendChild(vaciarCarrito);
 
+  vaciarCarrito.onclick = () => {
+    carrito = [];
+    localStorage.setItem("carrito", JSON.stringify("carrito"));
+    mostrarCardHtml();
+  }
+}
 
 mostrarCardHtml();
+mostrarCarrito();
 
 
-;
+
