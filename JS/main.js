@@ -1,8 +1,10 @@
 // DOM //
 const productosItem = document.querySelector("#productos");
 const carritoItem = document.querySelector("#carrito");
-const btnSumar = document.querySelector(`btnSuma`);
-const btnRestar = document.querySelector(`btnResta`);
+const prodSuma = document.querySelector(".suma");
+const prodResta = document.querySelector(".resta");
+const agregarAlCarrito = document.querySelector(".agragar");
+
 
 
 // PRODUCTOS DISPONIBLES //
@@ -35,76 +37,84 @@ let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 const mostrarCardHtml = () => {
   productosItem.innerHTML = " ";
 
-  productos.forEach((producto, index) => {
+  productos.forEach((producto) => {
     let cardDelProducto = document.createElement("div");
     cardDelProducto.innerHTML = `
     <p>Nombre:${producto.nombre}</p>
-    <p>Precio:${producto.precio}</p>
-    <p>Agregar producto: <span>${producto.contador}</span></p>`;
+    <p>Precio:${producto.precio}</p>`;
     productosItem.appendChild(cardDelProducto);
+    
+    let cantidad = document.createElement ("p");
+    cantidad.innerHTML = `Cantidad: ${producto.contador}`;
+    cardDelProducto.appendChild(cantidad);
 
     let btnSuma = document.createElement("button");
     btnSuma.innerHTML = "+";
     cardDelProducto.appendChild(btnSuma);
+    btnSuma.onclick = () => sumarProducto();
+
+    const sumarProducto = () =>{
+      cantidad.innerHTML = producto.contador +=1;
+    }
 
     let btnResta = document.createElement("button");
     btnResta.innerHTML = "-";
     cardDelProducto.appendChild(btnResta);
 
-    btnSuma.onclick = () => {
-      producto.contador += 1;
+    btnResta.onclick = () => restarProducto();
 
-    };
-    btnResta.onclick = () => {
-      btnResta.disabled = true;
-      producto.contador -= 1
+    const restarProducto = () => {
+      if (cantidad == 0) {
+        cantidad.innerHTML = producto.contador += 1
+      } else {
+        cantidad.innerHTML = producto.contador -= 1
+      }
 
     }
 
-    let btnAgregarProducto = document.createElement("button");
+    const btnAgregarProducto = document.createElement("button");
     btnAgregarProducto.innerHTML = "Agregar Producto";
     cardDelProducto.appendChild(btnAgregarProducto);
 
-    btnAgregarProducto.onclick = () => agregarProducto(index);
+    btnAgregarProducto.onclick = () => agregarProducto(producto.id);
 
-    let btnEliminarProducto = document.createElement("button");
+    const btnEliminarProducto = document.createElement("button");
     btnEliminarProducto.innerHTML = "Eliminar Producto";
     cardDelProducto.appendChild(btnEliminarProducto);
 
-    btnEliminarProducto.onclick = () => btnEliminarProducto(index);
+    btnEliminarProducto.onclick = () => btnEliminarProducto(producto.id);
 
+    /*AGREGAR PRODUCTOS AL CARRITO */
+
+    const agregarProducto = (id) => {
+
+      if (producto.contador > producto.stock) {
+        return Swal.fire({
+          text: `No hay suficiente stock la cantidad de máxima de productos es ${producto.stock}`,
+          icon: "error",
+        });
+      } if (producto.contador === 0) {
+        return Swal.fire({
+          text: "Debe seleccionar 1 producto",
+          icon: "error",
+        });
+      } else {
+        const producto = productos.find(producto => producto.id === id)
+        carrito.push(producto);
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        console.log(producto);
+      }
+
+
+    };
   })
 };
 
 
-/*AGREGAR PRODUCTOS AL CARRITO */
 
-const agregarProducto = (id) => {
-const producto = productos.find( producto => producto.id === id)
 
-carrito.push(producto);
-localStorage.setItem("carrito", JSON.stringify(carrito)); 
-
-};
 
 mostrarCardHtml();
-//const cantidad = parseInt(prodSumados.textContent);
 
-//if (cantidad > productos[index].stock) {
- // return Swal.fire({
-  //  text: `No hay suficiente stock la cantidad de máxima de productos es ${productos[index].stock}`,
- //  icon: "error",
- //});
-//} if (cantidad === 0) {
- // return Swal.fire({
-//   text: "Debe seleccionar 1 producto",
- //   icon: "error",
- // });
-//} else {
- // const productoSeleccionado = {
- //   id: productos[index].id,
- //   producto: productos[index].nombre,
- //  precio: productos[index].precio,
- //   cantidad: cantidad
- // }
-//};
+
+;
