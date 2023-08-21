@@ -1,9 +1,8 @@
 // DOM //
 const productosItem = document.querySelector("#productos");
 const carritoItem = document.querySelector("#carrito");
-
-const sumarProd = document.querySelector(`btnSuma`);
-const restarProd = document.querySelector(`btnResta`);
+const btnSumar = document.querySelector(`btnSuma`);
+const btnRestar = document.querySelector(`btnResta`);
 
 
 // PRODUCTOS DISPONIBLES //
@@ -53,30 +52,7 @@ const mostrarCardHtml = () => {
     cardDelProducto.appendChild(btnResta);
 
     btnSuma.onclick = () => {
-      const prodSumados = () =>{
-        producto.contador += 1;
-      };
-      const cantidad = parseInt(prodSumados.textContent);
-
-      if (cantidad > productos[index].stock) {
-        return Swal.fire({
-          text: `No hay suficiente stock la cantidad de máxima de productos es ${productos[index].stock}`,
-          icon: "error",
-        });
-      } if (cantidad === 0) {
-        return Swal.fire({
-          text: "Debe seleccionar 1 producto",
-          icon: "error",
-        });
-      } else {
-        const productoSeleccionado = {
-          id: productos[index].id,
-          producto: productos[index].nombre,
-         precio: productos[index].precio,
-          cantidad: cantidad
-        }
-      };
-
+      producto.contador += 1;
 
     };
     btnResta.onclick = () => {
@@ -112,3 +88,23 @@ localStorage.setItem("carrito", JSON.stringify(carrito));
 };
 
 mostrarCardHtml();
+//const cantidad = parseInt(prodSumados.textContent);
+
+//if (cantidad > productos[index].stock) {
+ // return Swal.fire({
+  //  text: `No hay suficiente stock la cantidad de máxima de productos es ${productos[index].stock}`,
+ //  icon: "error",
+ //});
+//} if (cantidad === 0) {
+ // return Swal.fire({
+//   text: "Debe seleccionar 1 producto",
+ //   icon: "error",
+ // });
+//} else {
+ // const productoSeleccionado = {
+ //   id: productos[index].id,
+ //   producto: productos[index].nombre,
+ //  precio: productos[index].precio,
+ //   cantidad: cantidad
+ // }
+//};
