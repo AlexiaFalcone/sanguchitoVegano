@@ -1,9 +1,9 @@
 // DOM //
 const productosItem = document.querySelector("#productos");
-const carritoItem = document.querySelector("#carrito");
 const prodSuma = document.querySelector(".suma");
 const prodResta = document.querySelector(".resta");
 const agregarAlCarrito = document.querySelector(".agragar");
+const carritoItem = document.querySelector("#carrito");
 
 // PRODUCTOS DISPONIBLES //
 
@@ -96,37 +96,40 @@ const mostrarCardHtml = () => {
       }
     };
 
-  })
+  });
+  
+  const mostrarCarrito = () => {
+    carritoItem.innerHTML = " ";
+  
+    carrito = JSON.parse(localStorage.getItem("carrito"));
+  
+    carrito.forEach((producto) => {
+      let prodBox = document.createElement("div");
+      prodBox.innerHTML = `
+      <p>Nombre:${producto.nombre}</p>
+      <p>Precio:${producto.precio}</p>
+      <p>Cantidad: ${producto.contador}</p>
+      <p>Valor: ${producto.precio * producto.cantidad}</p>
+      `
+      carritoItem.appendChild(prodBox);
+    });
+  
+    const vaciarCarrito = document.createElement("button");
+    vaciarCarrito.innerHTML = "Vaciar Carrito";
+    carritoItem.appendChild(vaciarCarrito);
+  
+    vaciarCarrito.onclick = () => {
+      carrito = [];
+      localStorage.setItem("carrito", JSON.stringify("carrito"));
+      console.log(carrito);
+    }
+  };
+  
+
 };
 
-const mostrarCarrito = () => {
-  contenedorProd.innerHTML = " ";
-
-  carrito = JSON.parse(localStorage.getItem("carrito"));
-  carrito.forEach((producto) => {
-    let prodBox = document.createElement("div");
-    prodBox.innerHTML = `
-    <p>Nombre:${producto.nombre}</p>
-    <p>Precio:${producto.precio}</p>
-    <p>Cantidad: ${producto.contador}</p>
-    <p>Valor: ${producto.precio * producto.cantidad}</p>
-    `
-    contenedorProd.appendChild(prodBox);
-  });
-
-  const vaciarCarrito = document.createElement("button");
-  vaciarCarrito.innerHTML = "Vaciar Carrito";
-  contenedorProd.appendChild(vaciarCarrito);
-
-  vaciarCarrito.onclick = () => {
-    carrito = [];
-    localStorage.setItem("carrito", JSON.stringify("carrito"));
-    mostrarCardHtml();
-  }
-}
-
 mostrarCardHtml();
-mostrarCarrito();
+
 
 
 
