@@ -98,38 +98,37 @@ const mostrarCardHtml = () => {
 
   });
   
-  const mostrarCarrito = () => {
-    carritoItem.innerHTML = " ";
-  
-    carrito = JSON.parse(localStorage.getItem("carrito"));
-  
-    carrito.forEach((producto) => {
-      let prodBox = document.createElement("div");
-      prodBox.innerHTML = `
-      <p>Nombre:${producto.nombre}</p>
-      <p>Precio:${producto.precio}</p>
-      <p>Cantidad: ${producto.contador}</p>
-      <p>Valor: ${producto.precio * producto.cantidad}</p>
-      `
-      carritoItem.appendChild(prodBox);
-    });
-  
-    const vaciarCarrito = document.createElement("button");
-    vaciarCarrito.innerHTML = "Vaciar Carrito";
-    carritoItem.appendChild(vaciarCarrito);
-  
-    vaciarCarrito.onclick = () => {
-      carrito = [];
-      localStorage.setItem("carrito", JSON.stringify("carrito"));
-      console.log(carrito);
-    }
-  };
-  
+};
 
+const mostrarCarrito = () => {
+  carritoItem.innerHTML = " ";
+
+  carrito = JSON.parse(localStorage.getItem("carrito"));
+  console.log(carrito)
+  carrito.forEach((producto) => {
+    let prodBox = document.createElement("div");
+    prodBox.innerHTML = `
+    <p>Nombre:${producto.nombre}</p>
+    <p>Precio:${producto.precio}</p>
+    <p>Cantidad: ${producto.contador}</p>
+    <p>Valor: ${producto.precio * producto.contador}</p>
+    `
+    carritoItem.appendChild(prodBox);
+  });
+
+  const vaciarCarrito = document.createElement("button");
+  vaciarCarrito.innerHTML = "Vaciar Carrito";
+  carritoItem.appendChild(vaciarCarrito);
+
+  vaciarCarrito.onclick = () => {
+    carrito = [];
+    localStorage.setItem("carrito", JSON.stringify("carrito"));
+    console.log(carrito);
+  }
 };
 
 mostrarCardHtml();
-
+mostrarCarrito();
 
 
 
