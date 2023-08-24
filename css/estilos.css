@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,400;0,600;1,200&display=swap");
+
+.logonav {
+    width: 60px;
+    padding: 0px;
+    margin: 0%;
+    margin-left: -80%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.navbar {
+    background-color: black;
+    max-width: 100%;
+    margin: 0%;
+}
+
+.tittleprod {
+    color:white;
+    background-color: rgba(52, 153, 52, 0.811);
+    font-family: "Poppins", sans-serif;
+    width: 400;
+    margin-block: 20px;
+    display: flex;
+    justify-content: center;
+}
