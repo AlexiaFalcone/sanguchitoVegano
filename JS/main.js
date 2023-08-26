@@ -98,8 +98,6 @@ const mostrarCardHtml = () => {
 const mostrarCarrito = () => {
   carritoItem.innerHTML = " ";
   carrito = JSON.parse(localStorage.getItem("carrito"));
-  console.log(carrito)
-
   if(carrito !== null){
   carrito.forEach((producto) => {
     let prodBox = document.createElement("div");
@@ -107,12 +105,9 @@ const mostrarCarrito = () => {
     <p>Nombre:${producto.nombre}</p>
     <p>Precio:${producto.precio}</p>
     <p>Cantidad: ${producto.contador}</p>
-    <p>Valor: ${producto.precio * producto.contador}</p>
-    `
+    <p>Valor: ${producto.precio * producto.contador}</p>`
     carritoItem.appendChild(prodBox);
-  })}else{
-    console.log("carrito vacio");
-  }
+  })}
 
   const vaciarCarrito = document.createElement("button");
   vaciarCarrito.innerHTML = "Vaciar Carrito";
@@ -125,6 +120,7 @@ const mostrarCarrito = () => {
 };
 
 mostrarCardHtml();
+
 mostrarCarrito();
 
 
