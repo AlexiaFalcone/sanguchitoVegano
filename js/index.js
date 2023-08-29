@@ -29,8 +29,6 @@ const productos = [
 
 let carrito = [];
 
-JSON.parse(localStorage.getItem("carrito"));
-
 const prodBox = document.querySelector("#listaProductos");
 
 const mostrarCardHtml = () => {
@@ -50,38 +48,41 @@ const mostrarCardHtml = () => {
         prodBox.appendChild(button)
 
         button.onclick = () => agregarAlCarrito(id);
+        
 
     })
 };
 
 
-const agregarAlCarrito = (id, cantidad) => {
-
+const agregarAlCarrito = (id) => {
+    
     const productoSeleccionado = productos.find(prod => prod.id === id);
-    productoSeleccionado.cantidad += 1
-
-    const existe = carrito.find(prod => prod.id == productoSeleccionado.id);
-    if (existe) {
-        cantidad++;
-        carrito.push(productoSeleccionado);
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-
-    } else {
+    console.log(productoSeleccionado)
+    console.log(carrito)   
+    if (carrito.length == 0) {
         productoSeleccionado.cantidad = 1;
         carrito.push(productoSeleccionado);
         localStorage.setItem("carrito", JSON.stringify(carrito));
-        console.log(productoSeleccionado)
+        console.log(productoSeleccionado)   
+    }else{
+       const existe = carrito.find(prod => prod.id === productoSeleccionado.id)
+       if(existe){
+       existe.cantidad++
+       localStorage.setItem("carrito", JSON.stringify(carrito));
+       }else{
+        productoSeleccionado.cantidad = 1;
+        carrito.push(productoSeleccionado);
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+       }
     }
-
-
-}
+};
 
 const carritoItem = document.querySelector("#carrito");
 
 const mostrarCarrito = () => {
     carritoItem.innerHTML = " ";
     carrito = JSON.parse(localStorage.getItem("carrito"));
-    if (carrito !== null) {
+    if (carrito.length !== 0) {
         carrito.forEach((producto) => {
             const { nombre, precio, cantidad } = producto
             let contenedorCarrito = document.createElement("div");
@@ -99,5 +100,5 @@ const mostrarCarrito = () => {
 }
 
 mostrarCardHtml();
-mostrarCarrito();
+mostrarCarrito ();
 
