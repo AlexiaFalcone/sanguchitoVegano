@@ -110,6 +110,41 @@ const mostrarCarrito = () => {
     totalCompra.innerText = carrito.reduce((acc,prod) => acc + prod.cantidad * prod.precio,0);
 };
 
+const vaciarCarrito = () => {
+    const vaciar = document.querySelector(".botonVaciar");
+    vaciar.onclick = () =>{
+    carrito = [];
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    mostrarCarrito();
+    } 
+}
+
+const finalizarCompra = () => {
+    const finalizar = document.querySelector(".botonFinalizar");
+    finalizar.onclick = () =>{
+        if(carrito.length != 0){
+            Swal.fire({
+                icon: 'success',
+                title: 'Su compra ha sido exitosa',
+                text: 'Ticker número: 001-001306',
+                showConfirmButton: true,
+                timer: 1500
+              }) 
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Debe agregar un producto',
+                showConfirmButton: false,
+                timer: 1500
+              })
+
+        }
+   
+    }
+}
+
 
 mostrarCardHtml();
 mostrarCarrito();
+vaciarCarrito();
+finalizarCompra();
