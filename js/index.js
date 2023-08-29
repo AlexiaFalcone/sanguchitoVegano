@@ -64,7 +64,8 @@ const agregarAlCarrito = (id) => {
         productoSeleccionado.cantidad = 1;
         carrito.push(productoSeleccionado);
         localStorage.setItem("carrito", JSON.stringify(carrito));
-        console.log(productoSeleccionado)   
+        console.log(productoSeleccionado) 
+          
     }else{
        const existe = carrito.find(prod => prod.id === productoSeleccionado.id)
        if(existe){
@@ -76,7 +77,13 @@ const agregarAlCarrito = (id) => {
         localStorage.setItem("carrito", JSON.stringify(carrito));
        }
     }
+    Toastify({
 
+        text: "Se agregó un producto al carrito",
+        
+        duration: 3000
+        
+        }).showToast();
     mostrarCarrito();
 };
 
@@ -117,7 +124,7 @@ const vaciarCarrito = () => {
     localStorage.setItem("carrito", JSON.stringify(carrito));
     mostrarCarrito();
     } 
-}
+};
 
 const finalizarCompra = () => {
     const finalizar = document.querySelector(".botonFinalizar");
@@ -136,12 +143,12 @@ const finalizarCompra = () => {
                 title: 'Debe agregar un producto',
                 showConfirmButton: false,
                 timer: 1500
-              })
+            })
 
         }
    
     }
-}
+};
 
 
 mostrarCardHtml();
