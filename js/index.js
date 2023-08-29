@@ -76,6 +76,8 @@ const agregarAlCarrito = (id) => {
         localStorage.setItem("carrito", JSON.stringify(carrito));
        }
     }
+
+    mostrarCarrito();
 };
 
 const carritoItem = document.querySelector("#contenedorCarrito");
@@ -95,8 +97,8 @@ const mostrarCarrito = () => {
                 <p>Valor: ${precio * cantidad}</p>
             `
             carritoItem.appendChild(contenedorCarrito);
-
         })
+
     }else{
         carritoItem.innerHTML = "";
         const carritoVacio= document.createElement("p");
@@ -104,10 +106,10 @@ const mostrarCarrito = () => {
         carritoVacio.innerHTML= "El carrito está vacío";
         carritoItem.appendChild(carritoVacio);
     }
-    
+    const totalCompra = document.querySelector("#precioTotal");
+    totalCompra.innerText = carrito.reduce((acc,prod) => acc + prod.cantidad * prod.precio,0);
 };
 
 
 mostrarCardHtml();
 mostrarCarrito();
-
