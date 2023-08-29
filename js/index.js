@@ -37,15 +37,16 @@ const mostrarCardHtml = () => {
     productos.forEach((producto) => {
         const { id, nombre, precio, img } = producto
         const cardProd = document.createElement("div");
+        cardProd.classList.add("card-prod")
         cardProd.innerHTML = `
         <img class="imgProd" src=${img}>
         <p>Nombre:${nombre}</p>
         <p>Precio:${precio}</p>`;
         prodBox.appendChild(cardProd)
 
-        const button = document.createElement("button")
+        const button = document.createElement("button");
         button.innerHTML = "Agregar al carrito";
-        prodBox.appendChild(button)
+        cardProd.appendChild(button)
 
         button.onclick = () => agregarAlCarrito(id);
         
@@ -77,12 +78,13 @@ const agregarAlCarrito = (id) => {
     }
 };
 
-const carritoItem = document.querySelector("#carrito");
+const carritoItem = document.querySelector("#contenedorCarrito");
 
 const mostrarCarrito = () => {
     carritoItem.innerHTML = " ";
-    carrito = JSON.parse(localStorage.getItem("carrito"));
-    if (carrito.length !== 0) {
+    carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    console.log(carrito)
+    if (carrito.length != 0) {
         carrito.forEach((producto) => {
             const { nombre, precio, cantidad } = producto
             let contenedorCarrito = document.createElement("div");
@@ -95,10 +97,17 @@ const mostrarCarrito = () => {
             carritoItem.appendChild(contenedorCarrito);
 
         })
+    }else{
+        carritoItem.innerHTML = "";
+        const carritoVacio= document.createElement("p");
+        carritoVacio.classList.add("empty-cart")
+        carritoVacio.innerHTML= "El carrito está vacío";
+        carritoItem.appendChild(carritoVacio);
     }
+    
+};
 
-}
 
 mostrarCardHtml();
-mostrarCarrito ();
+mostrarCarrito();
 
