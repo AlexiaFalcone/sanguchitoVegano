@@ -1,40 +1,21 @@
-const productos = [
-    {
-        id: 1,
-        nombre: "Pan integral",
-        precio: 850,
-        stock: 10,
-        img: "../img/panIntegral.jpeg",
-        cantidad: 0
-    },
+const obtenerProd = () =>{
+    fetch ("../js/productos.json")
+    .then ((resp) => resp.json())
+    .then ((data) => mostrarCardHtml(data))
+};
 
-    {
-        id: 2,
-        nombre: "Chipa Vegano",
-        precio: 1000,
-        stock: 15,
-        img: "../img/chipacito.jpeg",
-        cantidad: 0
-    },
-
-    {
-        id: 3,
-        nombre: "Sanguchito Caprese",
-        precio: 1600,
-        stock: 10,
-        img: "../img/sanguchito.jpeg",
-        cantidad: 0
-    },
-];
+const buscarProducto = (id, data ) =>{
+    return data.find(prod => prod.id === id)
+}
 
 let carrito = [];
 
 const prodBox = document.querySelector("#listaProductos");
 
-const mostrarCardHtml = () => {
+const mostrarCardHtml = (data) => {
     prodBox.innerHTML = "";
-
-    productos.forEach((producto) => {
+    if(data){
+    data.forEach((producto) => {
         const { id, nombre, precio, img } = producto
         const cardProd = document.createElement("div");
         cardProd.classList.add("card-prod")
@@ -48,18 +29,13 @@ const mostrarCardHtml = () => {
         button.innerHTML = "Agregar al carrito";
         cardProd.appendChild(button)
 
-        button.onclick = () => agregarAlCarrito(id);
-        
-
-    })
+        button.onclick = () => agregarAlCarrito(id, data);
+    })}
 };
 
 
-const agregarAlCarrito = (id) => {
-    
-    const productoSeleccionado = productos.find(prod => prod.id === id);
-    console.log(productoSeleccionado)
-    console.log(carrito)   
+const agregarAlCarrito = (id, data) => {
+    const productoSeleccionado = buscarProducto(id, data);  
     if (carrito.length == 0) {
         productoSeleccionado.cantidad = 1;
         carrito.push(productoSeleccionado);
@@ -150,7 +126,7 @@ const finalizarCompra = () => {
     }
 };
 
-
+obtenerProd();
 mostrarCardHtml();
 mostrarCarrito();
 vaciarCarrito();
