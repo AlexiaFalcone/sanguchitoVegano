@@ -21,11 +21,12 @@ const mostrarCardHtml = (data) => {
         cardProd.classList.add("card-prod")
         cardProd.innerHTML = `
         <img class="imgProd" src=${img}>
-        <p>Nombre:${nombre}</p>
-        <p>Precio:${precio}</p>`;
+        <p class="nombreProd">Nombre: ${nombre}</p>
+        <p class="precioProd">Precio: ${precio}</p>`;
         prodBox.appendChild(cardProd)
 
         const button = document.createElement("button");
+        button.classList.add("botonAgregar")
         button.innerHTML = "Agregar al carrito";
         cardProd.appendChild(button)
 
@@ -40,8 +41,6 @@ const agregarAlCarrito = (id, data) => {
         productoSeleccionado.cantidad = 1;
         carrito.push(productoSeleccionado);
         localStorage.setItem("carrito", JSON.stringify(carrito));
-        console.log(productoSeleccionado) 
-          
     }else{
        const existe = carrito.find(prod => prod.id === productoSeleccionado.id)
        if(existe){
@@ -54,11 +53,8 @@ const agregarAlCarrito = (id, data) => {
        }
     }
     Toastify({
-
         text: "Se agregó un producto al carrito",
-        
         duration: 3000
-        
         }).showToast();
     mostrarCarrito();
 };
@@ -68,7 +64,6 @@ const carritoItem = document.querySelector("#contenedorCarrito");
 const mostrarCarrito = () => {
     carritoItem.innerHTML = " ";
     carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    console.log(carrito)
     if (carrito.length != 0) {
         carrito.forEach((producto) => {
             const { nombre, precio, cantidad } = producto
@@ -81,7 +76,6 @@ const mostrarCarrito = () => {
             `
             carritoItem.appendChild(contenedorCarrito);
         })
-
     }else{
         carritoItem.innerHTML = "";
         const carritoVacio= document.createElement("p");
@@ -106,6 +100,7 @@ const finalizarCompra = () => {
     const finalizar = document.querySelector(".botonFinalizar");
     finalizar.onclick = () =>{
         if(carrito.length != 0){
+            localStorage.clear()
             Swal.fire({
                 icon: 'success',
                 title: 'Su compra ha sido exitosa',
@@ -113,6 +108,7 @@ const finalizarCompra = () => {
                 showConfirmButton: true,
                 timer: 1500
               }) 
+            
         }else{
             Swal.fire({
                 icon: 'error',
