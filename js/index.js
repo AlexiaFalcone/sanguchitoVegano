@@ -21,7 +21,7 @@ const mostrarCardHtml = (data) => {
         cardProd.classList.add("card-prod")
         cardProd.innerHTML = `
         <img class="imgProd" src=${img}>
-        <p class="nombreProd">Nombre: ${nombre}</p>
+        <p class="nombreProd"> ${nombre}</p>
         <p class="precioProd">Precio: ${precio}</p>`;
         prodBox.appendChild(cardProd)
 
@@ -66,13 +66,17 @@ const mostrarCarrito = () => {
     carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     if (carrito.length != 0) {
         carrito.forEach((producto) => {
-            const { nombre, precio, cantidad } = producto
+            const { img, nombre, precio, cantidad } = producto
             let contenedorCarrito = document.createElement("div");
+            contenedorCarrito.classList.add("divCart")
             contenedorCarrito.innerHTML = `
-                <p>Nombre:${nombre}</p>
+                <img class="imgProdCart" src=${img}>
+                <div class= "divCartInfo">
+                <p>${nombre}</p>
                 <p>Precio:${precio}</p>
                 <p>Cantidad: ${cantidad}</p>
                 <p>Valor: ${precio * cantidad}</p>
+                </div>
             `
             carritoItem.appendChild(contenedorCarrito);
         })
